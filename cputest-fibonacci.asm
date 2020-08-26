@@ -1,6 +1,6 @@
 	ORG 0
 
-start:	xor r0,r0
+start:	clear r0
 	loadi r1,1
 	loadi r3,fib
 	loadi r4,0xe
