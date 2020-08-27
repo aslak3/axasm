@@ -10,8 +10,8 @@ loop:	copy r2,r1
 	storer r3,r1
 	inc r3
 	dec r4
-	jumpnz loop
-hop:	jumpa hop
+	branchnz loop
+hop:	brancha hop
 
 fib:
 	END

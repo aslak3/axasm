@@ -19,7 +19,7 @@
 #define DEFLABEL(l) static unsigned l
 #define LABEL(l) l=_solo_add
 
-#define DW(n) _solo_info.ary[_solo_add++]=(n)
+#define DW(n) _solo_info.ary[_solo_add++]=(n&0xffff)
 
 #define r0 0
 #define r1 1
@@ -27,7 +27,7 @@
 #define r3 3
 #define r4 4
 #define r5 5
-#define r6 5
+#define r6 6
 #define r7 6
 
 #define NOP DW(0)
@@ -39,6 +39,16 @@
 #define JUMPNZ(i) DW(0x000c);DW(i)
 #define JUMPN(i) DW(0x000f);DW(i)
 #define JUMPNN(i) DW(0x000e);DW(i)
+
+#define _BRANCH(a) (( (a)-_solo_add ))
+
+#define BRANCHA(i) DW(0x0018);DW(_BRANCH(i))
+#define BRANCHC(i) DW(0x001b);DW(_BRANCH(i))
+#define BRANCHNC(i) DW(0x001a);DW(_BRANCH(i))
+#define BRANCHZ(i) DW(0x001d);DW(_BRANCH(i))
+#define BRANCHNZ(i) DW(0x001c);DW(_BRANCH(i))
+#define BRANCHN(i) DW(0x001f);DW(_BRANCH(i))
+#define BRANCHNN(i) DW(0x001e);DW(_BRANCH(i))
 
 #define LOADI(d,i) DW(0x0010+((d)&7)); DW(i)
 #define STOREI(i,s) DW(0x0020+((s)&7)); DW(i)
