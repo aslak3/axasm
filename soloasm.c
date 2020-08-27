@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
   outfile=stdout;
   while (opt!=-1)
     {
-      opt=getopt(argc,argv,"b8vhixo:");
+      opt=getopt(argc,argv,"mb8vhixo:");
       switch (opt)
 	{
 	case '8':
@@ -62,6 +62,9 @@ int main(int argc, char *argv[])
 	  break;
 	case 'x':
 	  mode=1;
+	  break;
+	case 'm':
+	  mode=6;
 	  break;
 	case 'h':
 	  mode=0;
@@ -142,6 +145,16 @@ int main(int argc, char *argv[])
       fseek(outfile,_solo_info.begin,SEEK_SET);
       for (int i=_solo_info.begin;i<=_solo_info.end;i++)
 	fputc(_solo_info.ary[i],outfile);
+      break;
+    case 6:
+      fprintf(outfile, "DEPTH=256;\n");
+      fprintf(outfile, "WIDTH=16;\n");
+      fprintf(outfile, "ADDRESS_RADIX=DEC;\n");
+      fprintf(outfile, "DATA_RADIX=HEX;\n\n");
+      fprintf(outfile, "CONTENT\nBEGIN\n");
+      for (i=_solo_info.begin;i<=_solo_info.end;i++) fprintf(outfile, "%d : %04x;\n", i, _solo_info.ary[i]);
+      for (;i<256;i++) fprintf(outfile, "%d : 0000;\n", i);
+      fprintf(outfile, "END;\n");
       break;
       
     default:  // including mode=0;

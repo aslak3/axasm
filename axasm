@@ -53,7 +53,7 @@ exit 1
 
 POSTOP=""   # output arguments sent to compiled program
 DEFOP=""    # -D options to compiler
-while getopts  "vHhbi8xp:D:o:" flag
+while getopts  "vHhbi8mxp:D:o:" flag
 do
   case $flag in 
   p )  PROC=$OPTARG ;;
@@ -63,6 +63,7 @@ do
   x )  POSTOP="$POSTOP -x" ;;
   b )  POSTOP="$POSTOP -b" ;;
   8 )  POSTOP="$POSTOP -8" ;;
+  m )  POSTOP="$POSTOP -m" ;;
   D )  DEFOP="$DEFOP -D $OPTARG"  ;;
   o )  POSTOP="$POSTOP -o $OPTARG" ;;
   h )  usage ;; 
