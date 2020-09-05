@@ -1,27 +1,26 @@
 		ORG 0
 
 start:		clear r0		; current delay
-		loadi r1,0x0400		; max delay
-		loadi r2,0x1000		; step
-		loadi r3,0xffff
+		loadi r1,0x1000		; max delay
+		loadi r2,0x100		; step
+		loadi r3,0x0200
 		clear r4
-		loadi r5,0xfffe
-		clear r6
-		storer r5,r6
+		loadi r5,0x8000
+		loadi r6,0x0000
+		loadi r7,0x100
+		storer r3,r4
 
-on:		storer r3,r4		; turn the led on with an opcode!
-		copy r0,r1		; grab the current maxdelay in r1
-onloop:		dec r0			; -1
-		branchnz onloop		; back for more?
-		not r4
-off:		storer r3,r4		; led off
-		copy r0,r1		; grab the current maxdelay again
-offloop:	dec r0			; -1
-		branchnz offloop	; back for more
-		not r4
+oloop:		copy r0,r1		; grab the current maxdelay in r1
+iloop:		dec r0			; -1
+		branchnz iloop		; back for more?
 ;		sub r1,r2		; decrease max delay by step
+		inc r4			; inc counter
+		storer r3,r4		; show counter
+		inc r5
 		inc r6
+		add r6,r7
 		storer r5,r6
-		brancha on		; back again
+		brancha oloop		; back again
 
 		END
+
