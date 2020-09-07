@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
   outfile=stdout;
   while (opt!=-1)
     {
-      opt=getopt(argc,argv,"mb8vhixo:");
+      opt=getopt(argc,argv,"mVb8vhixo:");
       switch (opt)
 	{
 	case '8':
@@ -65,6 +65,9 @@ int main(int argc, char *argv[])
 	  break;
 	case 'm':
 	  mode=6;
+	  break;
+	case 'V':
+	  mode=7;
 	  break;
 	case 'h':
 	  mode=0;
@@ -156,7 +159,11 @@ int main(int argc, char *argv[])
       for (;i<256;i++) fprintf(outfile, "%d : 0000;\n", i);
       fprintf(outfile, "END;\n");
       break;
-      
+    case 7:
+       for (i=_solo_info.begin;i<=_solo_info.end;i++) fprintf(outfile, "x\"%04x\",\n", _solo_info.ary[i]);
+       for (;i<63;i++) fprintf(outfile, "x\"0000\",\n");
+       fprintf(outfile, "x\"0000\"\n");
+       break;
     default:  // including mode=0;
       if (mode==3) fprintf(outfile,"@%X ",_solo_info.begin);	    
       for (i=_solo_info.begin;i<=_solo_info.end;i+=16)
