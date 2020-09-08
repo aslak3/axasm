@@ -64,6 +64,8 @@
 #define LEFT(d) 	DW(0x3800+(0xa<<6)+((d)&7))
 #define RIGHT(d) 	DW(0x3800+(0xb<<6)+((d)&7))
 #define COPY(d,s) 	DW(0x3800+(0xc<<6)+(((s)&7)<<3)+((d)&7))
+#define NEG(d)		DW(0x3800+(0xd<<6)+((d)&7))
+#define CMP(d,s) 	DW(0x3800+(0xf<<6)+(((s)&7)<<3)+((d)&7))
 
 #define ADDI(d,i) 	DW(0x3c00+(0x0<<6)+((d)&7)); DW(i)
 #define ADDCI(d,i)	DW(0x3c00+(0x1<<6)+((d)&7)); DW(i)
@@ -73,6 +75,7 @@
 #define ORI(d,i) 	DW(0x3c00+(0x7<<6)+((d)&7)); DW(i)
 #define XORI(d,i) 	DW(0x3c00+(0x8<<6)+((d)&7)); DW(i)
 #define COPYI(d,i) 	DW(0x3c00+(0xc<<6)+((d)&7)); DW(i)
+#define CMPI(d,i) 	DW(0x3c00+(0xf<<6)+((d)&7)); DW(i)
 
 #define CALLJUMP(i)	DW(0x4000+0b111111); DW(i)
 #define CALLBRANCH(i)	DW(0x4400+0b111111); DW(_BRANCH(i))
