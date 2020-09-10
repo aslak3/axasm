@@ -14,6 +14,9 @@ start:	clear r5		; the running total
 	loadi r3,0		; destination counter
 	loadi r4,length		; space for our fibs
 	loadr r4,r4		; load it
+	pushquick r7,r4
+	clear r4
+	popquick r4,r7
 loop:	copy r2,r1		; copy the last written value
 	add r1,r5		; accumulate
 	branchc done		; overflow? out

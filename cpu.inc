@@ -81,4 +81,9 @@
 #define CALLBRANCH(i)	DW(0x4400+0b111111); DW(_BRANCH(i))
 #define RETURN		DW(0x4800+0b111111)
 
+#define PUSHQUICK(d,s)	DW(0x5000+(((d)&7)<<3)+((s)&7))
+#define POPQUICK(d,s)	DW(0x5400+(((s)&7)<<3)+((d)&7))
+#define PUSHMULTI(d,i)	DW(0x5800+(((d)&7)<<3)); DW(i)
+#define POPMULTI(s,i)	DW(0x5c00+(((s)&7)<<3)); DW(i)
+
 #endif
