@@ -7,7 +7,7 @@ start:	loadi r0,1
 	loadi r4,5
 	loadi r5,6
 	loadi r6,7
-	loadi r7,0x40
+	loadi r7,0x80
 	pushmulti r7,0x7f
 	clear r0
 	clear r1

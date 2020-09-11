@@ -32,22 +32,46 @@
 
 #define NOP DW(0)
 
-#define JUMP(i)		DW(0x0800);DW(i)
-#define JUMPNZ(i)	DW(0x0800+0b010010000);DW(i)
-#define JUMPC(i)	DW(0x0800+0b100100100);DW(i)
+#define JUMP(i)		DW(0x0800);DW(_JUMP(i))
+#define JUMPNZ(i)	DW(0x0800+0b010010000);DW(_JUMP(i))
+#define JUMPC(i)	DW(0x0800+0b100100100);DW(_JUMP(i)i)
 
-#define _BRANCH(a) (( (a)-_solo_add ))
+#define _JUMP(a) (a<<1)
+#define _BRANCH(a) ((((a)-_solo_add)<<1))
 
 #define BRANCH(i)	DW(0x0c00);DW(_BRANCH(i))
 #define BRANCHNZ(i)	DW(0x0c00+0b010010000);DW(_BRANCH(i))
 #define BRANCHC(i)	DW(0x0c00+0b100100100);DW(_BRANCH(i))
 
-#define LOADI(d,i)	DW(0x2000+((d)&7)); DW(i)
-#define STOREI(i,s)	DW(0x2400+((s)&7)); DW(i)
-#define LOADR(d,s)	DW(0x2800+(((s)&7)<<3)+((d)&7))
-#define STORER(d,s)	DW(0x2c00+(((d)&7)<<3)+((s)&7))
-#define LOADRD(d,s,i)	DW(0x6800+(((s)&7)<<3)+((d)&7)); DW(i)
-#define STORERD(d,s,i)	DW(0x6c00+(((d)&7)<<3)+((s)&7)); DW(i)
+#define LOADI			LOADIW
+#define STOREI			STOREIW
+#define LOADR			LOADRW
+#define STORER			STORERW
+#define LOADRD			LOADRDW
+#define STORERD			STORERDW
+
+#define LOADIW(d,i)		LOADI_ROOT(0b00,d,i)
+#define LOADIBU(d,i)		LOADI_ROOT(0b10,d,i)
+#define LOADIBS(d,i)		LOADI_ROOT(0b11,d,i)
+#define STOREIW(i,s)		STOREI_ROOT(0b00,i,s)
+#define STOREIB(i,s)		STOREI_ROOT(0b10,i,s)
+#define LOADRBW(d,s)		LOADR_ROOT(0b00,d,s)
+#define LOADRBU(d,s)		LOADR_ROOT(0b10,d,s)
+#define LOADRBS(d,s)		LOADR_ROOT(0b11,d,s)
+#define STORERW(d,s)		STORER_ROOT(0b00,d,s)
+#define STORERB(d,s)		STORER_ROOT(0b10,d,s)
+#define LOADRDBW(d,s,i)		LOADR_ROOT(0b00,d,s,i)
+#define LOADRDBU(d,s,i)		LOADRD_ROOT(0b10,d,s,i)
+#define LOADRDBS(d,s,i)		LOADRD_ROOT(0b11,d,s,i)
+#define STORERDW(d,s,i)		STORERD_ROOT(0b00,d,s,i)
+#define STORERDB(d,s,i)		STORERD_ROOT(0b10,d,s,i)
+
+#define LOADI_ROOT(w,d,i)	DW(0x2000+(((w)&3)<<8)+((d)&7)); DW(i)
+#define STOREI_ROOT(w,i,s)	DW(0x2400+(((w)&3)<<8)+((s)&7)); DW(i)
+#define LOADR_ROOT(w,d,s)	DW(0x2800+(((w)&3)<<8)+(((s)&7)<<3)+((d)&7))
+#define STORER_ROOT(w,d,s)	DW(0x2c00+(((w)&3)<<8)+(((d)&7)<<3)+((s)&7))
+#define LOADRD_ROOT(w,d,s,i)	DW(0x6800+(((w)&3)<<8)+(((s)&7)<<3)+((d)&7)); DW(i)
+#define STORERD_ROOT(w,d,s,i)	DW(0x6c00+(((w)&3)<<8)+(((d)&7)<<3)+((s)&7)); DW(i)
 
 #define CLEAR(d) DW(0x3000+((d)&7));
 
@@ -77,7 +101,7 @@
 #define COPYI(d,i) 	DW(0x3c00+(0xc<<6)+((d)&7)); DW(i)
 #define CMPI(d,i) 	DW(0x3c00+(0xf<<6)+((d)&7)); DW(i)
 
-#define CALLJUMP(i)	DW(0x4000+0b111111); DW(i)
+#define CALLJUMP(i)	DW(0x4000+0b111111); DW(_JUMP(i))
 #define CALLBRANCH(i)	DW(0x4400+0b111111); DW(_BRANCH(i))
 #define RETURN		DW(0x4800+0b111111)
 
